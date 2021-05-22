@@ -1,0 +1,195 @@
+﻿@model Kanban.Controllers.KanbanController.KanbanTableModel
+
+@{
+    ViewData["Title"] = "Board";
+}
+
+<section class="kanban_table" >
+        <div class="kanban_table-column" >
+            <h2 class="kanban_table-th">
+                Stories
+            </h2>
+            <ul>
+                @foreach (var item in Model.Stories)
+                {
+                    <partial name="_TaskMenu" model="@item" />
+                }
+            </ul>
+        </div>
+        <div class="kanban_table-column" >
+            <h2 class="kanban_table-th">
+                ToDo
+            </h2>
+            <ul>
+                @foreach (var item in Model.ToDo)
+                {
+                    <partial name="_TaskMenu" model="@item" />
+                }
+            </ul>
+        </div>
+        <div class="kanban_table-column" >
+            <h2 class="kanban_table-th">
+                In Progress
+            </h2>
+            <ul>
+                @foreach (var item in Model.InProgress)
+                {
+                    <partial name="_TaskMenu" model="@item" />
+                }
+            </ul>
+        </div>
+        <div class="kanban_table-column">
+            <h2 class="kanban_table-th">
+                Testing
+            </h2>
+            <ul>
+                @foreach (var item in Model.Testing)
+                {
+                    <partial name="_TaskMenu" model="@item" />
+                }
+            </ul>
+        </div>
+        <div class="kanban_table-column">
+            <h2 class="kanban_table-th">
+                Done
+            </h2>
+            <ul>
+                @foreach (var item in Model.Done)
+                {
+                    <partial name="_TaskMenu" model="@item" />
+                }
+            </ul>
+        </div>
+
+</section>
+
+@section scripts{ 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var elementWithMenu;
+            var taskMenuEditId;
+            var taskMenuIconsId;
+
+            $('main').mousedown(function (e) {
+             
+                if ($(e.target).is("main") || $(e.target).is(".kanban_table-column") || $(e.target).is("section")) {
+                    if (elementWithMenu != null) {
+                        $(elementWithMenu).css({ display: "none" });
+                        $("#" + taskMenuIconsId).css({ display: "block" });
+                        $("#" + taskMenuEditId).css({ display: "none" });
+                        elementWithMenu = null;
+                    }
+                }
+                
+            })
+
+            $(".task_item").mousedown(function (e) {
+                if ($(e.target.parentElement.parentElement).is('.task_item')) {
+                    if (elementWithMenu != null) {
+                        $(elementWithMenu).css({ display: "none" });
+                        $("#" + taskMenuIconsId).css({ display: "block" });
+                        $("#" + taskMenuEditId).css({ display: "none" });
+                        elementWithMenu = null;
+                    }
+                    if ($(this).find(".task_menu").is(elementWithMenu)) {
+                       
+                        $(elementWithMenu).css({ display: "none" });
+                        $("#" + taskMenuIconsId).css({ display: "block" });
+                        $("#" + taskMenuEditId).css({ display: "none" });
+                        elementWithMenu = null;
+                    }
+                    else {
+                        elementWithMenu = $(this).find(".task_menu");
+                        $(elementWithMenu).css({ display: "block" });
+                    }
+                  
+                }
+            
+               
+
+            })
+        
+
+            $('.task_menu-edit-submit').click(function (e) {
+                Swal.fire({
+                    title: 'Do you want to EDIT this task?',
+                    showDenyButton: true,
+                    icon: 'question', 
+                    confirmButtonText: `Yes`,
+                    denyButtonText: `No`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('Saved!', '', 'success')
+                        setTimeout(function () {
+                            $(e.target.closest("form")).submit();
+                        }, 1000);
+                    }
+                    else if (result.isDenied) {
+                        Swal.fire('Changes are not saved', '', 'info')
+                    }
+                })
+            })
+
+         
+
+            $('.task_menu-submit').click(function (e) {
+                switch (e.target.name) {
+                    case "Done":
+                        
+                      e.target.closest("form").children[1].value="Done";
+                        Swal.fire({
+                            title: 'Do you want to COMPLETE this task?',
+                            showDenyButton: true,
+                            confirmButtonText: `Yes`,
+                            denyButtonText: `No`,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire('Saved!', '', 'success')
+                                setTimeout(function () {
+                                    $(e.target.closest("form")).submit();
+                                }, 1500);
+                            }
+                            else if (result.isDenied) {
+                                Swal.fire('Changes are not saved', '', 'info')
+                            }
+                        })
+                        break;
+                    case "Edit":
+                        e.target.closest('form').children[1].value = "Edit";
+                        taskMenuEditId = e.target.closest('form').children[2].id;
+                        taskMenuIconsId = e.target.closest('form').children[3].id;
+                        console.log(taskMenuIconsId = e.target.closest('form').children[3].id);
+                        $("#" + taskMenuIconsId).css({ display: "none" });
+                        $("#" + taskMenuEditId).css({ display: "block" });
+
+                        break;
+                    case "Delete":
+                        e.target.closest('form').children[1].value = "Delete";
+                        console.log(e.target.closest('form').children[1].value);
+                        Swal.fire({
+                            title: 'Do you want to DELETE task?',
+                            icon: 'error',
+                            showDenyButton: true,
+                            confirmButtonText: `Yes`,
+                            denyButtonText: `No`,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire('Saved!', '', 'success')
+                                setTimeout(function () {
+                                    $(e.target.closest("form")).submit();
+                                }, 1500);
+                            }
+                            else if (result.isDenied) {
+                                Swal.fire('Changes are not saved', '', 'info')
+                            }
+                        })
+                        break;
+                    default:
+                        break;
+                }
+                
+            });
+        })
+    </script>
+}

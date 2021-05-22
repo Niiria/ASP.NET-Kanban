@@ -1,0 +1,50 @@
+﻿@model Kanban.Models.Task
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<section class="px-4 pt-4 new_task-background flex-grow-1">
+    <h1 class=" font-bad-script display-4 mb-0 text-center" style="font-weight: 800">📄 Create a new <strong>task</strong> for your team! </h1>
+    <div class="row ">
+        <div class="col-md-4 mx-auto ">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Subject" class="control-label font-bad-script font-md "></label>
+                    <input asp-for="Subject" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartDate" class="control-label font-bad-script font-md "></label>
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="DueDate" class="control-label  font-bad-script font-md"></label>
+                    <input asp-for="DueDate" class="form-control" />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StatusId" class="control-label font-bad-script font-md ">Status</label>
+                    <select asp-for="StatusId" class="form-control" asp-items="@ViewBag.Status"></select>
+                    @*Html.GetEnumSelectList<Kanban.Data.Statuses>()*@
+                </div>
+                <div class="form-group text-center">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+ 
+
+
+   
+</section>
+
+
+
+

@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="text-center overflow-hidden home_background  d-flex flex-column justify-content-center align-items-center flex-grow-1">
+    <div class="d-flex justify-content-center w-100 "> 
+        <p id="home_k1" class="position-relative font_title-kanban">K</p>
+        <p id="home_a2" class="position-relative font_title-kanban">A</p>
+        <p id="home_n3" class="position-relative font_title-kanban">N</p>
+        <p id="home_b4" class="position-relative font_title-kanban">B</p>
+        <p id="home_a5" class="position-relative font_title-kanban">A</p>
+        <p id="home_n6" class="position-relative font_title-kanban">N</p>
+    </div>
+    <h2 id="home_organize" class="font_title-organize" >Organize your work - simple!</h2>
+</section>
+
+@section scripts{ 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#home_k1").css({ left: '-500px' }).animate({ left: '0px' }, 2500)
+        $("#home_a2").css({ left: '-500px' }).animate({ left: '0px' }, 2000)
+        $("#home_n3").css({ left: '-500px' }).animate({ left: '0px' }, 1500)
+        $("#home_b4").css({ right: '-500px' }).animate({ right: '0px' }, 1500)
+        $("#home_a5").css({ right: '-500px' }).animate({ right: '0px' }, 2000)
+        $("#home_n6").css({ right: '-500px' }).animate({ right: '0px' }, 2500)
+        $("#home_organize").css({ opacity: '0' }).delay(2500).animate({ opacity: '1' }, 1000);
+        console.log(1);
+    });
+</script>
+}

@@ -1,0 +1,54 @@
+﻿@model Kanban.Models.Task
+
+
+<li class="task_item cursor_pointer position-relative border-dark rounded-sm border h-100 bg-white  my-2 ">
+    <div class="w-100 form-row m-0 px-1">
+        <article class="p-1 text-break  col-11 " style=" word-wrap: break-word;">@Model.Subject</article>
+        <img class="col-1 p-0" src="/assets/Pin.svg" alt="Pin" />
+    </div>
+        @if (Model.Users != null)
+        {
+            foreach (var item in Model.Users)
+            {
+            <div>
+            <p class="text-muted font-sm m-0 text-center">- Created by: @item.Firstname -</p>
+                @if (@Model?.CompletedDate != null)
+                {
+                    <p class="text-muted font-sm m-0 text-center">Completed: @Model?.CompletedDate</p>
+                }
+            </div>
+               
+            }
+        }
+
+
+ 
+
+    <form asp-action="ChangeStatus" style="display: none" class="task_menu z-index-50 " id="task_menu_@Model.Id">
+
+        <input asp-for="Id" id="task_menu-hidden_@Model.Id" class="form-control" style="display: none" />
+        <input asp-for="Status.Name" id="task_menu-action_@Model.Id" class="task_menu-action form-control " value="" style="display: none" />
+        <div class="task_menu-edit " id="task_menu-edit_@Model.Id" style="display: none">
+            <input asp-for="Subject" id="task_menu-edit-subject_@Model.Id" autocomplete="off" class="form-control " value="@Model.Subject" />
+            <select asp-for="StatusId" id="task_menu-edit-status_@Model.Id" class="form-control" asp-items="@ViewBag.Status"></select>
+            <input type="button" id="task_menu-edit-submit-@Model.Id" class="btn btn-primary task_menu-edit-submit form-control" value="Edit" />
+        </div>
+
+        <div class="task_menu-icons h-100 " id="task_menu-icons_@Model.Id" style="display: block">
+            <div class="my-2">
+                <p class="text-muted font-sm m-0 text-center">Start date: @Model?.StartDate</p>
+                <p class="text-muted font-sm m-0 text-center">End date: @Model?.DueDate</p>
+            </div>
+            <div class="d-flex justify-content-around align-items-center mb-2 ">
+                <img class="task_menu-submit cursor_pointer" name="Done" src="~/assets/TaskMenuDoneIMG.png" alt="TaskMenuDoneIMG" />
+                <img class="task_menu-submit cursor_pointer" name="Edit" src="~/assets/TaskMenuEditIMG.png" alt="TaskMenuEditIMG" />
+                <img class="task_menu-submit cursor_pointer" name="Delete" src="~/assets/TaskMenuDeleteIMG.png" alt="TaskMenuDeleteIMG" />
+            </div>
+        </div>
+    </form>
+
+
+</li>
+
+
+
